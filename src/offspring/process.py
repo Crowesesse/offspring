@@ -2,7 +2,6 @@ import atexit
 import logging
 import multiprocessing
 import signal
-import sys
 import time
 
 log = logging.getLogger(__name__)
@@ -133,7 +132,6 @@ class SubprocessLoop(Subprocess):
             log.debug("Exit via interrupt")
         finally:
             self.end()
-            sys.exit()
 
     def begin(self):
         pass
