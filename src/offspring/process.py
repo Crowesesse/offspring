@@ -48,6 +48,7 @@ class Subprocess(object):
             # we use a pipe to confirm that the child has started up before we move on
             def bootstrap(writer):
                 writer.send(True)
+                writer.close()
                 self.run()
 
             startup_reader, startup_writer = multiprocessing.Pipe(duplex=False)
@@ -59,6 +60,8 @@ class Subprocess(object):
             except EOFError:
                 log.error("Failed to start subprocess for %s", self)
                 raise
+            finally:
+                startup_reader.close()
         else:
             self.process = multiprocessing.Process(target=self.run)
             self.process.start()
